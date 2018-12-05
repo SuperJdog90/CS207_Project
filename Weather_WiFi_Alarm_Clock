@@ -67,10 +67,53 @@ void setup()
   pinMode(LED,OUTPUT);
   pinMode(buzzer, OUTPUT); // Set buzzer as an output
   printAllOff();
-  Serial.begin(9600);
   Wire.begin();
   RTC.begin();
 
+  ESP8266WiFi.SSID();
+  Serial.begin(115200); //Operating speed of ESP8266
+  Serial.setTimeout(100);
+  Serial.println('\n');
+
+  Serial.println("done \n");
+  
+  Serial.println(x);
+  if (x == 0) {
+    ESP8266WiFi.begin(ssid, pass);//connect to access point
+    if (WiFi.status() != WL_CONNECTED) {
+      Serial.println("Not Connection");
+      delay(100);
+    } else {
+      WiFiClient client;
+      if (!client.connect(IP, 8080)) {
+        Serial.println("local not connection");
+      } else {
+        Serial.println("********************************");
+        Serial.print("Byte sent to the AP: ");
+        Serial.println(client.print("Anyo\r"));
+        String data = client.readStringUntil('\r');
+        Serial.println("From the AP: " + data);
+        delay(1000);
+      }
+
+    }
+    x = 1;
+  }
+  if (x == 1) {
+    WiFi.begin(ssids, passs);//Connect to router
+    if (WiFi.status() != WL_CONNECTED) {
+      Serial.println("Server not connection");
+      delay(100);
+    } else {
+      Serial.println("wifi connected");
+      WiFiClient client;
+      if (!client.connect(host, 80)) {
+        Serial.println("Server failed");
+      } else {
+        Serial.println("Connected");
+        delay(100);
+      }
+//Check RTC
   if (! RTC.isrunning()) {
     Serial.println("RTC is NOT running!");
     // Set the date and time at compile time
