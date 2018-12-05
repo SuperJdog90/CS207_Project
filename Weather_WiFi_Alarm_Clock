@@ -77,6 +77,22 @@ void setup()
 
   Serial.println("done \n");
   
+  
+//Check RTC
+  if (! RTC.isrunning()) {
+    Serial.println("RTC is NOT running!");
+    // Set the date and time at compile time
+    RTC.adjust(DateTime(__DATE__, __TIME__));
+  }
+  // RTC.adjust(DateTime(__DATE__, __TIME__)); //removing "//" to adjust the time
+    // The default display shows the date and time
+  int menu=0;
+}
+ 
+void loop()
+{ 
+
+//Connect ESP8266 to Network
   Serial.println(x);
   if (x == 0) {
     ESP8266WiFi.begin(ssid, pass);//connect to access point
@@ -113,20 +129,17 @@ void setup()
         Serial.println("Connected");
         delay(100);
       }
-//Check RTC
-  if (! RTC.isrunning()) {
-    Serial.println("RTC is NOT running!");
-    // Set the date and time at compile time
-    RTC.adjust(DateTime(__DATE__, __TIME__));
-  }
-  // RTC.adjust(DateTime(__DATE__, __TIME__)); //removing "//" to adjust the time
-    // The default display shows the date and time
-  int menu=0;
-}
- 
-void loop()
-{ 
 
+
+//Read a value from the host
+char c = client.read();
+
+//Print to lcd
+lcd.setCursor(0, 0);
+lcd.print("Temp  : ");
+lcd.print(c);
+   
+  
 // check if you press the SET button and increase the menu index
   if(digitalRead(P1)== LOW) 
   {
@@ -180,6 +193,8 @@ void loop()
     menu=0;
     }
     delay(100);
+    //reset x
+    x=0;
 }
 
 void DisplayDateTime ()
@@ -230,11 +245,7 @@ void DisplayDateTime ()
   lcd.print(now.year(), DEC);
   yearupg=now.year();
  
-  char DOW[][10]={"Sunday   ","Monday   ","Tuesday  ","Wednesday","Thursday ","Friday   ","Saturday "};
-  lcd.setCursor(0, 0); 
-  lcd.print("Day  : ");
-  lcd.print(DOW[now.dayOfTheWeek()]); // if it appears error in the code, enter the code given below
-  //lcd.print(DOW[now.dayOfWeek()]);
+ 
 }
 
 void DisplaySetHour()
