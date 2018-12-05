@@ -21,9 +21,15 @@ RTC_DS1307 RTC;
 ESP8266WiFiMulti wifiMulti;
 
 //****************Set Up IP****************//
-//Website you  want to use to read temperature
+//Website you want to use to read temperature
 const char* host = "https//www.theweathernetwork.com/ca/hourly-weather-forecast/saskatchewan/regina";
 IPAddress IP(x, x, x, x); // Set your server's fixed IP address here
+
+//***********Set Up Network**************//
+const char* ssid = "aPointName";
+const char* pass = "aPointPass"; //connect to Access Point
+const char* ssids = "routerName";
+const char* passs = "routerPass";//connect to router
 
 //************Button*****************//
 int P1=6; // Button SET MENU'
@@ -45,7 +51,7 @@ int menu =0;
 int setAll =0;
 
 uint8_t alarmHours = 0, alarmMinutes = 0;  // Holds the current alarm time
-
+int x = 0; //For comaparing ESP8266 sheild modes
 
 void setup()
 {
